@@ -1,0 +1,66 @@
+$icon-font-path: "/bower_components/sass-bootstrap/fonts/";
+
+@import 'sass-bootstrap/lib/bootstrap';
+
+/* Put your CSS here */
+html, body {
+  margin: 20px;
+}
+
+body {
+  padding-top: 50px;
+}
+
+.starter-template {
+  padding: 40px 15px;
+}
+
+body {
+    background: #fafafa;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #333;
+}
+
+.right-aligned {
+  text-align: right !important;
+}
+
+.hero-unit {
+    margin: 50px auto 0 auto;
+    width: 300px;
+    font-size: 18px;
+    font-weight: 200;
+    line-height: 30px;
+    background-color: #eee;
+    border-radius: 6px;
+    padding: 60px;
+}
+
+.hero-unit h1 {
+    font-size: 60px;
+    line-height: 1;
+    letter-spacing: -1px;
+}
+
+textarea { display: block; }
+.truncate {
+  width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+textarea {
+  overflow:auto; 
+  resize: none;
+  box-sizing:border-box; 
+  -moz-box-sizing:border-box;
+}
+
+form.form-horizontal span.inline-error {
+  font-size: 11px;
+  color: #c00;
+  margin-top: 5px;
+  display: block;
+}
