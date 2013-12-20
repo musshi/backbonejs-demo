@@ -66,7 +66,8 @@ BookStore.Routers = BookStore.Routers || {};
           $(_this.el).find("#book_form_container").html(_this.listFormView.render().el);
           
           var listsCollectionView = new BookStore.Views.ListCollectionView({collection: collection, list_form_view: _this.listFormView});
-           $(_this.el).find("table#books_table_listing").html(listsCollectionView.render().el);
+          $("#books_table_listing2").hide();
+          $(_this.el).find("table#books_table_listing1").html(listsCollectionView.render().el);
            
            if(typeof(callback) === "function") {
              callback.call();
@@ -76,15 +77,34 @@ BookStore.Routers = BookStore.Routers || {};
     },
   
     taskShow: function(id, callback) {
+      $("#books_table_listing2").show();
       var _this = this;
       this.tasksCollection = new BookStore.Collections.TasksCollection();
       this.tasksCollection.url = "/api/lists/" +  id + "/tasks";
       this.tasksCollection.fetch({
         success: function(collection, response, options) {
+          var array1 = [];
+          var array2 = [];
+          for(var i = 0; i < collection.length; i++) {
+            if(collection.models[i].get("completed")) {
+              array1.push(collection.models[i]);
+            }
+            else {
+              array2.push(collection.models[i]);
+            }
+          }
+      
+          var taskItemCompletedCollection = new BookStore.Collections.TasksCollection(array1);
+          var taskItemUnCompletedCollection = new BookStore.Collections.TasksCollection(array2);
+          
           _this.tasksFormView = new BookStore.Views.TasksFormView({collection: collection});
           $(_this.el).find("#book_form_container").html(_this.tasksFormView.render().el);
-          var tasksCollectionView = new BookStore.Views.TasksCollectionView({collection: collection, tasks_form_view: _this.tasksFormView});
-           $(_this.el).find("table#books_table_listing").html(tasksCollectionView.render().el);
+          var tasksCollectionViewC = new BookStore.Views.TasksCollectionView({collection: taskItemCompletedCollection, tasks_form_view: _this.tasksFormView});
+          
+          var tasksCollectionViewU = new BookStore.Views.TasksCollectionView({collection: taskItemUnCompletedCollection, tasks_form_view: _this.tasksFormView});
+          
+           $(_this.el).find("table#books_table_listing2").html(tasksCollectionViewU.render().el);
+           $(_this.el).find("table#books_table_listing1").html(tasksCollectionViewC.render().el);
            
             $(_this.el).find("#books_container h5").html(collection.list_name);
             $(_this.el).find("#books_container h5").attr("data-id", id);
@@ -94,6 +114,6 @@ BookStore.Routers = BookStore.Routers || {};
            }//end if
         }
       });
-    }     
+    },  
   });
 })();

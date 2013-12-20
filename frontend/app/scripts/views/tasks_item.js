@@ -6,18 +6,18 @@ BookStore.Views = BookStore.Views || {};
   'use strict';
 
   BookStore.Views.tasksItemView = Backbone.View.extend({
-    
     template: JST['app/scripts/templates/tasks_item.ejs'],
     tagName: "tr",
     events: {
       "click button.remove-button": "removeTasks",
       "click button.edit-button"  : "editTasks",
-      "change p.item-task input"  : "changecompleted"
+      "click p.item-task input"   : "changecompleted"
     },
     
     initialize: function(options) {
       this.listenTo(this.model, "remove", this.remove);
       this.listenTo(this.model, "change", this.render);
+      this.listenTo(this.model, "change:completed", this.render);
       this.formView = options.form_view;
     },
             
@@ -34,14 +34,25 @@ BookStore.Views = BookStore.Views || {};
     
     removeTasks: function(event) {
       var confirm = window.confirm("Are you sure that you want to delete this tasks?");
-      if(confirm) {        
+      if(confirm) {
         this.model.destroy();
       }//end if
     },
-    // changecompleted: function{
- //      
- //      
- //    },
+    
+    changecompleted: function(event){
+      var task_id = parseInt(this.model.get("id"));
+      var _this = this;
+      var taskUpdateCompleteModel = new BookStore.Models.TasksModel();
+      taskUpdateCompleteModel.url = "/api/tasks/update_complete";
+      taskUpdateCompleteModel.fetch({
+        type: "POST",
+        data: {id: task_id}, 
+        success: function() {
+          _this.model.toggleSelected();
+        },
+        error: function(){ }
+      });
+    },
     
   });
 })();

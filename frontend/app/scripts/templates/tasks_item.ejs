@@ -1,11 +1,23 @@
-<td>
-  <p class="item-task">
-    <input type="checkbox" name="name" value="value">  <%= name %>              
-    <br>
-  </p>   
-</td>
-
-<td>
- <button class='btn btn-default btn-primary btn-xs edit-button'>Edit</button>
- <button class='btn btn-default btn-primary btn-xs remove-button'>Remove</button>
-</td>
+<% if(completed == true) { %>
+  <td>
+    <p class="item-task">
+      <input type="checkbox" name="name" value="value" <%= completed ? "checked" : "" %>>  <%= name %>              
+      <br>
+    </p>   
+  </td>
+  <td>
+   <button class='btn btn-default btn-primary btn-xs edit-button'>Edit</button>
+   <button class='btn btn-default btn-primary btn-xs remove-button'>Remove</button>
+  </td>
+<% } else { %>
+  <td>
+    <p class="item-task">
+      <input type="checkbox" name="name" value="value" <%= completed ? "checked" : "" %>>  <%= name %>
+      <br>
+    </p>   
+  </td>
+  <td>
+   <button class='btn btn-default btn-primary btn-xs edit-button'>Edit</button>
+   <button class='btn btn-default btn-primary btn-xs remove-button'>Remove</button>
+  </td>
+<% } %>

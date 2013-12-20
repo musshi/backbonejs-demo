@@ -22,7 +22,7 @@ class Api::TasksController < ApplicationController
  def update
    @list = List.find(params[:list_id])
    @task = @list.tasks.find(params[:id])
-   if @task.update_attributes(params[:id].permit(:name))
+   if @task.update_tasks(params[:name])
      render :json => @task
    else
      render :json => {:result => "failed"}
@@ -33,6 +33,15 @@ class Api::TasksController < ApplicationController
  def find_list_by_taskid
    @task = Task.find(params[:id])
    render :json => { list_id: @task.list_id }
+ end
+ 
+ def update_complete
+   @task = Task.find(params[:id])   
+   if @task.toggle_completed
+     render :json => {:result => "success"}
+   else
+     render :json => {:result => "failed"}
+   end
  end
   
 end

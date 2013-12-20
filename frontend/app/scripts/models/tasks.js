@@ -7,6 +7,9 @@ BookStore.Models = BookStore.Models || {};
 
     BookStore.Models.TasksModel = Backbone.Model.extend({
       // urlRoot: "/api/lists/:id/tasks"
+      toggleSelected: function(){
+        this.set('completed', !this.get("completed")); 
+      }
     });
 
 })();

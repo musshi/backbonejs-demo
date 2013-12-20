@@ -44,17 +44,25 @@ BookStore.Views = BookStore.Views || {};
         name: this.$el.find(this.ui.nameFieldSelector).val(),
       };
       
+      var list_id = $("#books_container h5").attr("data-id"); 
+      var type = "POST";
+      var url = "";
       if(this.tasks) {
-        goingToSavetasks = this.tasks;  
+        goingToSavetasks = this.tasks;
+        type = "PUT";
+        url = "/api/lists/"+ list_id +"/tasks/" + this.tasks.id;
       } else {
         goingToSavetasks = new BookStore.Models.TasksModel();
+        type = "POST";
+        url = "/api/lists/"+ list_id +"/tasks";
       }//end else
       
-      var list_id = $("#books_container h5").attr("data-id");      
-      goingToSavetasks.url = "/api/lists/"+ list_id +"/tasks";      
+           
+      goingToSavetasks.url = url;      
       goingToSavetasks.set(updatedAttributes);
       goingToSavetasks.save(goingToSavetasks.attributes, {
         //type: "POST",(put and post using one form)
+        type: type,
         success: function(model) {          
           if(!_this.tasks) {
             _this.collection.add(model);
