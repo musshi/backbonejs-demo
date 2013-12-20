@@ -10,11 +10,21 @@ BookStore.Views = BookStore.Views || {};
     tagName: "tbody",
     
     initialize: function(options) {
+      
+      this.otherCollection = options.otherCollection;
       this.listenTo(this.collection, "add", this.addOne);
+      this.listenTo(this.collection, "toggleStatus", this.removeFromCollection);
+      this.listenTo(this.collection, "remove", this.render);
       this.tasksFormView = options.tasks_form_view;
     },
     
+    removeFromCollection: function(task) {
+      this.collection.remove(task);
+      this.otherCollection.add(task);
+    },
+    
     render: function() {
+      this.$el.html("");
       this.collection.forEach(this.addOne, this);
       return this;
     },

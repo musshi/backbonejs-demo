@@ -49,6 +49,7 @@ BookStore.Views = BookStore.Views || {};
         data: {id: task_id}, 
         success: function() {
           _this.model.toggleSelected();
+          _this.model.trigger("toggleStatus", _this.model);
         },
         error: function(){ }
       });
