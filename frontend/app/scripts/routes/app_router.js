@@ -97,7 +97,7 @@ BookStore.Routers = BookStore.Routers || {};
           var taskItemCompletedCollection = new BookStore.Collections.TasksCollection(array1);
           var taskItemUnCompletedCollection = new BookStore.Collections.TasksCollection(array2);
           
-          _this.tasksFormView = new BookStore.Views.TasksFormView({collection: collection});
+          _this.tasksFormView = new BookStore.Views.TasksFormView({collection: taskItemUnCompletedCollection});
           $(_this.el).find("#book_form_container").html(_this.tasksFormView.render().el);
           var tasksCollectionViewC = new BookStore.Views.TasksCollectionView({collection: taskItemCompletedCollection, tasks_form_view: _this.tasksFormView, otherCollection: taskItemUnCompletedCollection});
           

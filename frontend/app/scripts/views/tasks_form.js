@@ -23,9 +23,9 @@ BookStore.Views = BookStore.Views || {};
       return this;
     },
     
-    loadTasks: function(tasks) {
-      this.$el.find(this.ui.nameFieldSelector).val(tasks.get('name'));     
-      this.tasks = tasks;
+    loadTasks: function(task) {
+      this.$el.find(this.ui.nameFieldSelector).val(task.get('name'));     
+      this.task = task;
     },
         
     cancelBookForm: function(event) {
@@ -33,13 +33,13 @@ BookStore.Views = BookStore.Views || {};
       var list_id = $("#books_container h5").attr("data-id");
       Backbone.history.navigate("/lists/" + list_id + "/tasks", true);
       this.resetForm();
-      this.tasks = null;
+      this.task = null;
     },
     
     submittasksForm: function(event) {
       event.preventDefault();
       var _this = this;
-      var goingToSavetasks = null;
+      var goingToSavetask = null;
       var updatedAttributes = {
         name: this.$el.find(this.ui.nameFieldSelector).val(),
       };
@@ -47,32 +47,24 @@ BookStore.Views = BookStore.Views || {};
       var list_id = $("#books_container h5").attr("data-id"); 
       var type = "POST";
       var url = "";
-      if(this.tasks) {
-        goingToSavetasks = this.tasks;
+      if(this.task) {
+        goingToSavetask = this.task;
         type = "PUT";
-        url = "/api/lists/"+ list_id +"/tasks/" + this.tasks.id;
+        url = "/api/lists/"+ list_id +"/tasks/" + this.task.id;
       } else {
-        goingToSavetasks = new BookStore.Models.TasksModel();
+        goingToSavetask = new BookStore.Models.TasksModel();
         type = "POST";
         url = "/api/lists/"+ list_id +"/tasks";
       }//end else
-      
-           
-      goingToSavetasks.url = url;      
-      goingToSavetasks.set(updatedAttributes);
-      goingToSavetasks.save(goingToSavetasks.attributes, {
+                
+      goingToSavetask.url = url;      
+      goingToSavetask.set(updatedAttributes);
+      goingToSavetask.save(goingToSavetask.attributes, {
         //type: "POST",(put and post using one form)
         type: type,
-        success: function(model) {          
-          if(!_this.tasks) {
-            _this.collection.add(model);
-            _this.collection.url = "/api/lists/"+ list_id +"/tasks";
-            _this.collection.fetch({
-              type: "GET",
-              success: function(collection, response) {
-                _this.collection = collection;
-              }
-            });
+        success: function(model) {
+          if(!_this.task) {
+            _this.collection.add(model);            
           }//end if
           _this.cancelBookForm(event);
         }

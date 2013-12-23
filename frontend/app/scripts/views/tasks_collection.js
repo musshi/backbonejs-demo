@@ -9,8 +9,7 @@ BookStore.Views = BookStore.Views || {};
     template: JST['app/scripts/templates/tasks_collection.ejs'],
     tagName: "tbody",
     
-    initialize: function(options) {
-      
+    initialize: function(options) {    
       this.otherCollection = options.otherCollection;
       this.listenTo(this.collection, "add", this.addOne);
       this.listenTo(this.collection, "toggleStatus", this.removeFromCollection);
@@ -20,9 +19,9 @@ BookStore.Views = BookStore.Views || {};
     
     removeFromCollection: function(task) {
       this.collection.remove(task);
-      this.otherCollection.add(task);
+      this.otherCollection.add(task);    
     },
-    
+      
     render: function() {
       this.$el.html("");
       this.collection.forEach(this.addOne, this);

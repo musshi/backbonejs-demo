@@ -9,7 +9,7 @@ class Api::TasksController < ApplicationController
  def create
    @list = List.find(params[:list_id])
    @task = @list.tasks.create(params[:task].permit(:name)) # params[:task] == {:name => "abc", "active": true}
-   render :json => @list
+   render :json => @task
  end
  
  def destroy
