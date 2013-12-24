@@ -1,4 +1,6 @@
 class Task < ActiveRecord::Base
+  # default_scope { where(color: 'red') }
+  default_scope order("position ASC")
   belongs_to :list
   # attr_accessible :name
   

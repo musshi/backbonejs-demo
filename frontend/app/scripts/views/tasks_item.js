@@ -9,9 +9,10 @@ BookStore.Views = BookStore.Views || {};
     template: JST['app/scripts/templates/tasks_item.ejs'],
     tagName: "tr",
     events: {
-      "click button.remove-button": "removeTasks",
-      "click button.edit-button"  : "editTasks",
-      "click p.item-task input"   : "changecompleted"
+      "click button.remove-button"  : "removeTasks",
+      "click button.edit-button"    : "editTasks",
+      "click p.item-task input"     : "changecompleted",
+      "click button.reorder-button" : "reorderTasks"
     },
     
     initialize: function(options) {
@@ -29,6 +30,12 @@ BookStore.Views = BookStore.Views || {};
     editTasks: function(event) {
       event.preventDefault();
       Backbone.history.navigate('#list/tasks-' + this.model.get('id') + "/edit", true);
+      this.formView.loadTasks(this.model);
+    },
+    
+    reorderTasks: function(event){
+      event.preventDefault();
+      Backbone.history.navigate('#list/tasks-' + this.model.get('id') + "/reorder", true);
       this.formView.loadTasks(this.model);
     },
     

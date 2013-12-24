@@ -11,9 +11,11 @@ BookStore.Routers = BookStore.Routers || {};
     routes: {
       "lists-:id/edit" : "editlist",
       "list/tasks-:id/edit" : "edittask",    
+      "list/tasks-:id/reorder" : "reordertasks",   
       "": "index",
       "lists": "lists",
       "lists/:id/tasks": "taskShow"
+      
     },
 
     editlist: function(listId) {
@@ -39,7 +41,36 @@ BookStore.Routers = BookStore.Routers || {};
       });      
     },
     
+    reordertasks: function(taskId){
+      $("#books_table_listing1").hide();
+      var myHash = [];
+      var listHash = {};
+      $("#reorder").sortable({
+         stop: function(event, ui) {
+           $("#reorder").children('tr').each(function (index, element) {
+            var dataTaskId = $(this).find('input:first').attr("value"); 
+            myHash.push({"id": dataTaskId, "position": index});        
+                      
+          });
+          
+          listHash["list"] = {"tasks": myHash};   
+          var listId = ui.item.parent().parent().data("id");
+          var taskItemUnCompletedCollection = new BookStore.Collections.TasksCollection();
+          taskItemUnCompletedCollection.url = "/api/lists/" + listId + "/update_reorder_position";
+          console.log(listHash);   
+          taskItemUnCompletedCollection.fetch({
+            type: "PUT", 
+            data: listHash, 
+            success: function() {            
+            },
+          });
+        }
+        });
+      $("#reorder").disableSelection();
+    },
+    
     index: function(callback) {
+      $("#books_table_listing1").show();
       var _this = this;
       this.booksCollection = new BookStore.Collections.BooksCollection();
       this.booksCollection.fetch({
@@ -58,6 +89,7 @@ BookStore.Routers = BookStore.Routers || {};
     },
     
     lists: function(){
+      $("#books_table_listing1").show();
       this.listsCollection = new BookStore.Collections.ListsCollection();
       var _this = this;
       this.listsCollection.fetch({
@@ -78,6 +110,7 @@ BookStore.Routers = BookStore.Routers || {};
   
     taskShow: function(id, callback) {
       $("#books_table_listing2").show();
+      $("#books_table_listing1").show();
       var _this = this;
       this.tasksCollection = new BookStore.Collections.TasksCollection();
       this.tasksCollection.url = "/api/lists/" +  id + "/tasks";
@@ -99,15 +132,19 @@ BookStore.Routers = BookStore.Routers || {};
           
           _this.tasksFormView = new BookStore.Views.TasksFormView({collection: taskItemUnCompletedCollection});
           $(_this.el).find("#book_form_container").html(_this.tasksFormView.render().el);
+          
           var tasksCollectionViewC = new BookStore.Views.TasksCollectionView({collection: taskItemCompletedCollection, tasks_form_view: _this.tasksFormView, otherCollection: taskItemUnCompletedCollection});
           
           var tasksCollectionViewU = new BookStore.Views.TasksCollectionView({collection: taskItemUnCompletedCollection, tasks_form_view: _this.tasksFormView, otherCollection: taskItemCompletedCollection});
           
            $(_this.el).find("table#books_table_listing2").html(tasksCollectionViewU.render().el);
+           // console.log(tasksCollectionViewU.render().el);
            $(_this.el).find("table#books_table_listing1").html(tasksCollectionViewC.render().el);
            
             $(_this.el).find("#books_container h5").html(collection.list_name);
             $(_this.el).find("#books_container h5").attr("data-id", id);
+            
+            $(_this.el).find("#books_container table").attr("data-id", id);
            
            if(typeof(callback) === "function") {
              callback.call();

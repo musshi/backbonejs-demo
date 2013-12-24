@@ -34,4 +34,23 @@ class Api::ListsController < ApplicationController
     render :json => @list
   end
   
+  def update_reorder_position
+     @list = List.find(params[:id].to_i)
+     # @list.update_attributes(params[:list].permit(:tasks))
+     tasks = params[:list][:tasks]    
+     # puts tasks
+     tasks.each do |k,v|
+       # puts v
+       task = @list.tasks.find(v["id"].to_i)
+       if task.present?
+         puts task.id
+         puts task.position
+         # task.update_attribute(:position => v["position"].to_i)
+         task.position = v["position"].to_i
+         task.save()
+       end 
+     end   
+     render :json => {:result => "successful"}
+    
+  end
 end

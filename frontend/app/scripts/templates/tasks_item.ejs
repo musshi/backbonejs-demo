@@ -1,23 +1,24 @@
 <% if(completed == true) { %>
   <td>
     <p class="item-task">
-      <input type="checkbox" name="name" value="value" <%= completed ? "checked" : "" %>>  <%= name %>              
+      <input type="checkbox" name="name" value="<%= id %>" <%= completed ? "checked" : "" %>>  <%= name %>              
       <br>
     </p>   
   </td>
   <td>
    <button class='btn btn-default btn-primary btn-xs edit-button'>Edit</button>
-   <button class='btn btn-default btn-primary btn-xs remove-button'>Remove</button>
+   <button class='btn btn-default btn-primary btn-xs remove-button'>Remove</button>  
   </td>
 <% } else { %>
   <td>
     <p class="item-task">
-      <input type="checkbox" name="name" value="value" <%= completed ? "checked" : "" %>>  <%= name %>
+      <input type="checkbox" name="name" value="<%= id %>" <%= completed ? "checked" : "" %>>  <%= name %>
       <br>
     </p>   
   </td>
   <td>
    <button class='btn btn-default btn-primary btn-xs edit-button'>Edit</button>
    <button class='btn btn-default btn-primary btn-xs remove-button'>Remove</button>
+    <button class='btn btn-default btn-primary btn-xs reorder-button'>Reorder</button>
   </td>
 <% } %>
