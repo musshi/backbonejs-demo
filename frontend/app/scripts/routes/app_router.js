@@ -49,8 +49,7 @@ BookStore.Routers = BookStore.Routers || {};
          stop: function(event, ui) {
            $("#reorder").children('tr').each(function (index, element) {
             var dataTaskId = $(this).find('input:first').attr("value"); 
-            myHash.push({"id": dataTaskId, "position": index});        
-                      
+            myHash.push({"id": dataTaskId, "position": index});                 
           });
           
           listHash["list"] = {"tasks": myHash};   
@@ -69,8 +68,7 @@ BookStore.Routers = BookStore.Routers || {};
       $("#reorder").disableSelection();
     },
     
-    index: function(callback) {
-      $("#books_table_listing1").show();
+    index: function(callback) {    
       var _this = this;
       this.booksCollection = new BookStore.Collections.BooksCollection();
       this.booksCollection.fetch({
@@ -79,7 +77,7 @@ BookStore.Routers = BookStore.Routers || {};
           $(_this.el).find("#book_form_container").html(_this.bookFormView.render().el);
                     
           var booksCollectionView = new BookStore.Views.BooksCollectionView({collection: collection, book_form_view: _this.bookFormView});
-          $(_this.el).find("table#books_table_listing").html(booksCollectionView.render().el);
+          $(_this.el).find("table#books_table_listing2").html(booksCollectionView.render().el);
           
           if(typeof(callback) === "function") {
             callback.call();
