@@ -35,7 +35,8 @@ BookStore.Views = BookStore.Views || {};
     
     reorderTasks: function(event){
       event.preventDefault();
-      Backbone.history.navigate('#list/tasks-' + this.model.get('id') + "/reorder", true);
+      var list_id = $("#books_container h5").attr("data-id");
+      Backbone.history.navigate('#list/' + list_id + '/tasks/' + this.model.get('id') + "/reorder", true);
       this.formView.loadTasks(this.model);
     },
     

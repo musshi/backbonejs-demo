@@ -6,10 +6,11 @@ BookStore.Views = BookStore.Views || {};
   'use strict';
 
   BookStore.Views.TasksCollectionView = Backbone.View.extend({    
-    template: JST['app/scripts/templates/tasks_collection.ejs'],
+    // template: JST['app/scripts/templates/tasks_collection.ejs'],
     tagName: "tbody",
     
-    initialize: function(options) {    
+    initialize: function(options) {  
+        
       this.otherCollection = options.otherCollection;
       this.listenTo(this.collection, "add", this.addOne);
       this.listenTo(this.collection, "toggleStatus", this.removeFromCollection);

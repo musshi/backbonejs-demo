@@ -11,7 +11,7 @@ BookStore.Routers = BookStore.Routers || {};
     routes: {
       "lists-:id/edit" : "editlist",
       "list/tasks-:id/edit" : "edittask",    
-      "list/tasks-:id/reorder" : "reordertasks",   
+      "list/:id/tasks/:id/reorder" : "reordertasks",   
       "": "index",
       "lists": "lists",
       "lists/:id/tasks": "taskShow"
@@ -41,7 +41,10 @@ BookStore.Routers = BookStore.Routers || {};
       });      
     },
     
-    reordertasks: function(taskId){
+    reordertasks: function(listId, taskId){
+       var _this = this;
+      $("#books_table_listing2").show();
+      console.log(23232);
       $("#books_table_listing1").hide();
       var myHash = [];
       var listHash = {};
@@ -49,18 +52,15 @@ BookStore.Routers = BookStore.Routers || {};
          stop: function(event, ui) {
            $("#reorder").children('tr').each(function (index, element) {
             var dataTaskId = $(this).find('input:first').attr("value"); 
-            myHash.push({"id": dataTaskId, "position": index});                 
-          });
-          
-          listHash["list"] = {"tasks": myHash};   
-          var listId = ui.item.parent().parent().data("id");
+            myHash[index] = {"id": dataTaskId, "position": index};               
+          });          
+          listHash["list"] = {"tasks": myHash};            
           var taskItemUnCompletedCollection = new BookStore.Collections.TasksCollection();
-          taskItemUnCompletedCollection.url = "/api/lists/" + listId + "/update_reorder_position";
-          console.log(listHash);   
+          taskItemUnCompletedCollection.url = "/api/lists/" + listId + "/update_reorder_position";  
           taskItemUnCompletedCollection.fetch({
             type: "PUT", 
             data: listHash, 
-            success: function() {            
+            success: function() {                               
             },
           });
         }
@@ -70,6 +70,7 @@ BookStore.Routers = BookStore.Routers || {};
     
     index: function(callback) {    
       var _this = this;
+      $("#books_table_listing2").show();
       this.booksCollection = new BookStore.Collections.BooksCollection();
       this.booksCollection.fetch({
         success: function(collection, response, options) {
